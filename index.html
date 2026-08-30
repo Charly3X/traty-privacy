@@ -109,7 +109,7 @@
 <body>
     <div class="container">
         <h1>Traty Privacy Policy</h1>
-        <p class="date">Effective date: 23 August 2026</p>
+        <p class="date">Effective date: 30 August 2026</p>
         <p>Traty turns a photograph of a paper receipt into a list of purchases, so that spending can be read month by month and category by category. What follows is what the app does with data, who receives it, and how to take it back or delete it. This document describes what the app actually does, not what it intends to.</p>
         <h2>1. Who we are</h2>
         <p>The controller of the data described here is <strong>Oleksii Charoian</strong>, an individual, at vul. Lesia Serdiuka 44, Kharkiv, Kharkiv Oblast, 61184, Ukraine, reachable at <a href="mailto:oleksii.charoian@gmail.com">oleksii.charoian@gmail.com</a>. There is no company behind the app and no data protection officer: it is one person, and that person answers your requests.</p>
@@ -128,48 +128,53 @@
         <p><strong>Recognition is optional.</strong> If you would rather not send a photograph of a receipt to a third party, do not use recognition: items can be entered by hand, and the rest of the app works without restriction.</p>
         <h2>4. Operational data</h2>
         <p>To bound what recognition costs, the handler keeps counters keyed to your account identifier, to your device identifier, and — if you belong to a household — to that household&#x27;s identifier. The counters live in Cloudflare Workers KV. Counters for a period are deleted once the period ends. They contain no images and no receipt contents.</p>
+        <p>The handler also keeps a record of what each recognition cost us: your account identifier, the moment, which model read the receipt, how much work it took and what that came to in money. The record lives in a Cloudflare D1 database and is what tells us the price of running the service. It holds no image and no receipt contents — not the shop, not the items, not the amount you paid.</p>
         <p>To establish that a request comes from a signed-in user, the app attaches a Firebase token. The token is verified and not stored.</p>
         <p>A recognition request also carries two hints that help read the receipt: the language of the app&#x27;s interface, and the currency code the app would use if the receipt does not print one. Neither is stored.</p>
-        <h2>5. Households: one shared receipt base</h2>
+        <h2>5. Diagnostics: what happens when something breaks</h2>
+        <p>When the app or the handler fails, a report of that failure is sent to <strong>Sentry</strong> (Functional Software, Inc.) and stored in Sentry&#x27;s European region. A report carries the error and the place in the code it happened, the version of the app, the model of the device and the version of its operating system, and the identifier of your account — enough to match a complaint to what actually went wrong. It carries <strong>no</strong> receipt image, no receipt contents, no email address and no name.</p>
+        <p>Only a failure that means something on our side is broken is reported. A spent allowance, a missing subscription, or a photo that holds no receipt are the app working as designed, and nothing about them is sent anywhere. Reports are kept for as long as Sentry&#x27;s own retention allows and are not used for anything but fixing defects.</p>
+        <h2>6. Households: one shared receipt base</h2>
         <p>The app lets several accounts join a household with a single shared base of receipts. This is voluntary: without joining one, your receipts are visible only to you.</p>
         <p><strong>What it means for your data.</strong> While you are in a household, every member sees <strong>all</strong> of its receipts in full — merchant, date, total, every item and category — and may edit and delete them. Each receipt shows who entered it. The receipts you accumulated before joining are moved into the shared base when you join and become visible to the other members.</p>
         <p><strong>What happens when you leave.</strong> If you leave a household yourself, a copy of the receipts you entered returns to your own history, while the household keeps everything it had — including those receipts. If the owner removes you, access to the shared base ends at once and you get no copy: the removed member no longer has access, and the owner has none to your personal area, so there is nobody left who could make one.</p>
         <p><strong>Who decides what.</strong> Only the owner — whose subscription opened the household — can invite and remove. An invitation is a short code that lives for fifteen minutes and is spent on first use. Any member may leave at any time.</p>
         <p><strong>Storage enforces the boundary.</strong> Access to a household&#x27;s receipts is granted only to the accounts in its roster, and that is checked by Cloud Firestore security rules on Google&#x27;s side, not by the app on the device.</p>
-        <h2>6. Who receives data</h2>
+        <h2>7. Who receives data</h2>
         <table>
             <tr><th>Recipient</th><th>What they receive</th><th>Why</th></tr>
             <tr><td>Google LLC (Firebase Authentication, Cloud Firestore)</td><td>account data, receipts</td><td>signing in and storing receipts</td></tr>
             <tr><td>The other members of your household</td><td>all of the household&#x27;s receipts, including yours</td><td>the shared spending base, if you joined one</td></tr>
-            <tr><td>Cloudflare, Inc.</td><td>the receipt image (in transit), account, device and household identifiers</td><td>the recognition handler and the allowance counters</td></tr>
+            <tr><td>Cloudflare, Inc.</td><td>the receipt image (in transit), account, device and household identifiers</td><td>the recognition handler, the allowance counters and the record of what recognition cost</td></tr>
             <tr><td>OpenAI, Inc.</td><td>the receipt image</td><td>reading the contents of the purchase</td></tr>
             <tr><td>Google LLC (Google Play Billing, Play Developer API)</td><td>the purchase token, and whatever the payment itself requires — that part happens inside Google Play and does not pass through us</td><td>selling and verifying the subscription</td></tr>
+            <tr><td>Functional Software, Inc. (Sentry)</td><td>the error, the version of the app, the device and its operating system, the account identifier</td><td>finding and fixing what breaks</td></tr>
         </table>
         <p>We do <strong>not</strong> sell data, do <strong>not</strong> share it for advertising, and do not use it for profiling.</p>
-        <h2>7. Transfers outside the EEA</h2>
-        <p>The recipients listed above are companies in the United States, and the app is operated from Ukraine, so data is processed outside the European Economic Area. Transfers to the recipients rely on the European Commission&#x27;s standard contractual clauses and, where applicable, on the recipient&#x27;s participation in the Data Privacy Framework. Ukraine has no adequacy decision, and requests you send to the address above are answered from there.</p>
-        <h2>8. Legal bases</h2>
+        <h2>8. Transfers outside the EEA</h2>
+        <p>The recipients listed above are companies in the United States, and the app is operated from Ukraine, so data is processed outside the European Economic Area. Error reports are the exception: Sentry stores them in its European region, so they stay inside the EEA. Transfers to the recipients rely on the European Commission&#x27;s standard contractual clauses and, where applicable, on the recipient&#x27;s participation in the Data Privacy Framework. Ukraine has no adequacy decision, and requests you send to the address above are answered from there.</p>
+        <h2>9. Legal bases</h2>
         <ul>
             <li><strong>Performance of a contract</strong> (Art. 6(1)(b) GDPR) — the account, storing and showing your receipts, recognition at your request, and the household.</li>
             <li><strong>Performance of a contract</strong> (Art. 6(1)(b) GDPR) — the subscription: the purchase token is what proves the subscription is yours and still current.</li>
             <li><strong>Legitimate interest</strong> (Art. 6(1)(f) GDPR) — the allowance counters and abuse protection: without them nothing bounds what recognition costs.</li>
         </ul>
-        <h2>9. Retention</h2>
-        <p>Account data and receipts are kept for as long as your account exists. A receipt entered into a household is kept for as long as the household exists or until any of its members deletes it; your leaving does not remove it from there. Receipt images are not kept at all. Period counters live no longer than their period — a day or a calendar month; the free-recognition counter has no expiry, because the allowance itself has none. The subscription record and the purchase-token binding are kept while the account exists and are deleted together with it — both of them, so that someone who buys, deletes the account and signs up again can restore what they paid for. On the model provider&#x27;s side: up to 30 days, see &quot;Receipt recognition&quot;.</p>
-        <h2>10. Your rights</h2>
+        <h2>10. Retention</h2>
+        <p>Account data and receipts are kept for as long as your account exists. A receipt entered into a household is kept for as long as the household exists or until any of its members deletes it; your leaving does not remove it from there. Receipt images are not kept at all. Period counters live no longer than their period — a day or a calendar month; the free-recognition counter has no expiry, because the allowance itself has none. The record of what recognition cost outlives the account, but not the link to you: deleting the account replaces your identifier in it with a marker, so what remains is a cost with nobody attached to it and is no longer data about a person. The subscription record and the purchase-token binding are kept while the account exists and are deleted together with it — both of them, so that someone who buys, deletes the account and signs up again can restore what they paid for. On the model provider&#x27;s side: up to 30 days, see &quot;Receipt recognition&quot;.</p>
+        <h2>11. Your rights</h2>
         <p>You may request access to your data, its rectification, erasure, portability, restriction of processing, and you may object to processing based on legitimate interest. Write to <a href="mailto:oleksii.charoian@gmail.com">oleksii.charoian@gmail.com</a> and we will answer within the period the GDPR sets (one month).</p>
         <p>You also have the right to lodge a complaint with the data protection authority of your place of residence.</p>
-        <h2>11. Deleting your account and data</h2>
+        <h2>12. Deleting your account and data</h2>
         <p>You can delete your account <strong>in the app</strong>: Settings → Delete account. The app asks you to confirm it is you — with your password, or by consenting again at your sign-in provider — and then deletes the account data, every receipt in your personal area, the allowance counters, the subscription record and the purchase-token binding. Deletion is irreversible.</p>
         <p>If the app is already off your phone, write to <a href="mailto:oleksii.charoian@gmail.com">oleksii.charoian@gmail.com</a> from the address the account is registered to. The procedure and the timing are on a page of their own: <a href="./delete-account.html">deleting your account</a>.</p>
         <p>Receipts you entered into a household stay with the household — the other members can see them, and deleting your account does not remove them. An owner&#x27;s deletion is refused while the household exists: it has to be disbanded first, so the shared base does not vanish for everyone else without their knowing. If you want to take your history with you, leave the household <strong>before</strong> deleting the account: a voluntary departure returns a copy of your receipts to your own history.</p>
-        <h2>12. Children</h2>
+        <h2>13. Children</h2>
         <p>The app is not directed at children under 16, and we deliberately collect no data about age.</p>
-        <h2>13. Security</h2>
+        <h2>14. Security</h2>
         <p>Data travels over TLS only. Access to receipts is bounded by Cloud Firestore security rules on Google&#x27;s side: a receipt is visible to the account that owns it, and a household&#x27;s receipt only to its members. Model provider keys live on the server and never reach the app.</p>
-        <h2>14. Contact</h2>
+        <h2>15. Contact</h2>
         <p>Questions about this policy and data requests: <a href="mailto:oleksii.charoian@gmail.com">oleksii.charoian@gmail.com</a>.</p>
-        <h2>15. Changes</h2>
+        <h2>16. Changes</h2>
         <p>If what we process changes — should receipt images start being stored, say, or should the model provider change — we will update this policy and the Data safety declaration in Google Play before the change takes effect. The effective date at the top of this document identifies the edition in force.</p>
         <footer>
             &copy; 2026 Traty. All rights reserved.
