@@ -134,7 +134,8 @@
         <p>To establish that a request comes from a signed-in user, the app attaches a Firebase token. The token is verified and not stored.</p>
         <p>A recognition request also carries two hints that help read the receipt: the language of the app&#x27;s interface, and the currency code the app would use if the receipt does not print one. Neither is stored.</p>
         <h2>5. Diagnostics: what happens when something breaks</h2>
-        <p>When the app or the handler fails, a report of that failure is sent to <strong>Sentry</strong> (Functional Software, Inc.) and stored in Sentry&#x27;s European region. A report carries the error and the place in the code it happened, the version of the app, the model of the device and the version of its operating system, and the identifier of your account — enough to match a complaint to what actually went wrong. It carries <strong>no</strong> receipt image, no receipt contents, no email address and no name.</p>
+        <p>When the app or the handler fails, a report of that failure is sent to <strong>Sentry</strong> (Functional Software, Inc.) and stored in Sentry&#x27;s European region. A report carries the error and the place in the code it happened, the version of the app and of the operating system, the identifier of your account, and technical facts about the device that usually explain the failure: model, interface language, time zone, free memory and storage, battery level, and which permissions you have granted the app.</p>
+        <p>It carries <strong>no</strong> receipt image, no receipt contents, no email address and no name. It carries no location either: the projects are configured not to store IP addresses, and an approximate location would otherwise be derived from one.</p>
         <p>Only a failure that means something on our side is broken is reported. A spent allowance, a missing subscription, or a photo that holds no receipt are the app working as designed, and nothing about them is sent anywhere. Reports are kept for as long as Sentry&#x27;s own retention allows and are not used for anything but fixing defects.</p>
         <h2>6. Households: one shared receipt base</h2>
         <p>The app lets several accounts join a household with a single shared base of receipts. This is voluntary: without joining one, your receipts are visible only to you.</p>
@@ -150,7 +151,7 @@
             <tr><td>Cloudflare, Inc.</td><td>the receipt image (in transit), account, device and household identifiers</td><td>the recognition handler, the allowance counters and the record of what recognition cost</td></tr>
             <tr><td>OpenAI, Inc.</td><td>the receipt image</td><td>reading the contents of the purchase</td></tr>
             <tr><td>Google LLC (Google Play Billing, Play Developer API)</td><td>the purchase token, and whatever the payment itself requires — that part happens inside Google Play and does not pass through us</td><td>selling and verifying the subscription</td></tr>
-            <tr><td>Functional Software, Inc. (Sentry)</td><td>the error, the version of the app, the device and its operating system, the account identifier</td><td>finding and fixing what breaks</td></tr>
+            <tr><td>Functional Software, Inc. (Sentry)</td><td>the error, the version of the app, technical facts about the device and its operating system, the account identifier</td><td>finding and fixing what breaks</td></tr>
         </table>
         <p>We do <strong>not</strong> sell data, do <strong>not</strong> share it for advertising, and do not use it for profiling.</p>
         <h2>8. Transfers outside the EEA</h2>
